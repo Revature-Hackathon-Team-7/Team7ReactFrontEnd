@@ -74,153 +74,135 @@ function MatchRoom(props: any) {
     photoURL = auth.currentUser.photoURL;
   }
 
-  const [matchState, setMatchState] = useState({
-    p1health: 0,
-    p1name: "",
-    p1move: 0,
-    p2health: 0,
-    p2name: "",
-    p2move: 0,
-  });
-  const [isPlayer1, setPlayer1] = useState(false);
-  const [player1Attack, setPlayer1Attack] = useState("");
+  const [players, setPlayers] = useState([{}]);
+
+  // const [isPlayer1, setPlayer1] = useState(false);
+  // const [player1Attack, setPlayer1Attack] = useState("");
 
   const getData = async () => {
-    const collectionRef = firestore.collection("Match");
+    const collectionRef = firestore.collection("Player");
     const data = await collectionRef.get();
 
     if (data != undefined) {
-      data.docs.forEach((item) => {
-        setMatchState({
-          //not sure if the property names actually match the same values in the database
-          p1health: item.data().p1Health,
-          p1name: item.data().player1,
-          p1move: item.data().p1Move,
-          p2health: item.data().p2Health,
-          p2name: item.data().player2,
-          p2move: item.data().p1Move,
+      //console.log(data);
+      
+      data.docs.forEach((item) => 
+      {
+        let temp = {}.push({
+          name: item.data().name,
+          move: item.data().move,
+          health: item.data().health,
+          photo: photoURL,
         });
+
+        setPlayers(temp));
       });
     }
   };
 
   useEffect(() => {
     getData();
-
-    console.log(matchState.p1health);
-
-    if (matchState.p1name === "" && matchState.p2name === "") {
-      setPlayer1(true);
-
-      const collectionRef = firestore.collection("Match");
-      collectionRef.doc().update({
-        player1move: uid,
-      });
-    }
-
-    if(player1Attack !== "")
-    {
-      p1choice(player1Attack);
-    }
   });
 
-  const p1choice = async (choice: string) => {
+  // const p1choice = async (choice: string) => {
     
-    console.log(choice);
-    const collectionRef = firestore.collection("Match");
-    const data = await collectionRef.get();
+  //   console.log(choice);
+  //   const collectionRef = firestore.collection("Match");
+  //   const data = await collectionRef.get();
 
-    if (choice === "swing") {
-      if (data != null) {
-        collectionRef.doc().update({
-          player1move: 1,
-        });
-        if (matchState.p2move !== 0) {
-          if (matchState.p2move === 1) {
-            //if the 2nd player swing kicks
-            //update the database so that both players are swing kicking
-            collectionRef.doc().update({
-              player1move: 1,
-              player2move: 1,
-            });
+  //   if (choice === "swing") {
+  //     setPlayer1Attack("");
+  //     if (data != null) {
+  //       collectionRef.doc().update({
+  //         player1move: 1,
+  //       });
+  //       if (matchState.p2move !== 0) {
+  //         if (matchState.p2move === 1) {
+  //           //if the 2nd player swing kicks
+  //           //update the database so that both players are swing kicking
+  //           collectionRef.doc().update({
+  //             player1move: 1,
+  //             player2move: 1,
+  //           });
+            
+  //         } else if (matchState.p2move === 2) {
+  //           //if the 2nd player uppercut punches
+  //           let obj = {
+  //             p1health: 0,
+  //             p2health: 0,
+  //           };
+  //           data.docs.forEach((item) => {
+  //             obj = {
+  //               p1health: item.data().player1health,
+  //               p2health: item.data().player2health,
+  //             };
+  //           });
 
-            setPlayer1Attack("");
-          } else if (matchState.p2move === 2) {
-            //if the 2nd player uppercut punches
-            let obj = {
-              p1health: 0,
-              p2health: 0,
-            };
-            data.docs.forEach((item) => {
-              obj = {
-                p1health: item.data().player1health,
-                p2health: item.data().player2health,
-              };
-            });
+  //           //update the database
+  //           collectionRef.doc().update({
+  //             player1health: obj.p1health - 2,
+  //             player2health: obj.p1health,
+  //             player1move: 1,
+  //             player2move: 2,
+  //           });
+  //         } else if (matchState.p2move === 3) {
+  //           //if the 2nd player uppercut punches
+  //           let obj = {
+  //             p1health: 0,
+  //             p2health: 0,
+  //           };
+  //           data.docs.forEach((item) => {
+  //             obj = {
+  //               p1health: item.data().player1health,
+  //               p2health: item.data().player2health,
+  //             };
+  //           });
 
-            //update the database
-            collectionRef.doc().update({
-              player1health: obj.p1health - 2,
-              player2health: obj.p1health,
-              player1move: 1,
-              player2move: 2,
-            });
+  //           //update the database
+  //           collectionRef.doc().update({
+  //             player1health: obj.p1health - 2,
+  //             player2health: obj.p1health,
+  //             player1move: 1,
+  //             player2move: 3,
+  //           });
 
-            setPlayer1Attack("");
-          } else if (matchState.p2move === 3) {
-            //if the 2nd player uppercut punches
-            let obj = {
-              p1health: 0,
-              p2health: 0,
-            };
-            data.docs.forEach((item) => {
-              obj = {
-                p1health: item.data().player1health,
-                p2health: item.data().player2health,
-              };
-            });
-
-            //update the database
-            collectionRef.doc().update({
-              player1health: obj.p1health - 2,
-              player2health: obj.p1health,
-              player1move: 1,
-              player2move: 3,
-            });
-
-            setPlayer1Attack("");
-          }
-        }
-      }
-    } 
-  };
+  //         }
+  //       }
+  //     }
+  //   } 
+  // };
 
   return (
     <>
       {/* TO DO MAKE MATCH ROOM COME HERE IF USER IS SIGNED IN */}
       <h1>Match Room</h1>
 
-      {isPlayer1 ? (
-        <>
-          <div className="p1-health" style={{ color: "white" }}>
-            {matchState.p1health}
-          </div>
-          <div className="p1-name" style={{ color: "white" }}>
-            {matchState.p1name}
-          </div>
-          <div className="p1-move">
-            <img src={photoURL} alt="player 1" />
-            <p style={{ color: "white" }}>{matchState.p1move}</p>
-          </div>
-          <button onClick={() => setPlayer1Attack("swing")}>Swing Kick</button>
-          <button onClick={() => p1choice("upper")}>Uppercut</button>
-          <button onClick={() => p1choice("low")}>Low Kick</button>
-        </>
-      ) : (
-        <div className="p1"></div>
-      )}
+      {players.map((e,i)=>{
+          // <Player key={i} health={e.health} photo={e.photo} name={e.name}
+          // move={e.move} />
+      })}
     </>
   );
+}
+
+const Player = (props:any) => {
+  return (
+    <>
+          <div className="p1-health" style={{ color: "white" }}>
+            {props.health}
+          </div>
+          <div className="p1-name" style={{ color: "white" }}>
+            {props.name}
+          </div>
+          <div className="p1-move">
+            <img src={props.photo} alt="player 1" />
+            <p style={{ color: "white" }}>{props.move}</p>
+          </div>
+          <button onClick={() => ""}>Swing Kick</button>
+          <button onClick={() => ""}>Uppercut</button>
+          <button onClick={() => ""}>Low Kick</button>
+        </>
+  )
 }
 
 export default App;
