@@ -81,6 +81,7 @@ function MatchRoom() {
     p2name: "",
     p2move: 0,
   });
+  const [isPlayer1, setPlayer1] = useState(false);
 
   const getData = async () => {
 
@@ -105,10 +106,11 @@ function MatchRoom() {
 
   useEffect(()=>{
     getData();
-
-    if(matchState.p1name === "")
+    console.log();
+    
+    if(matchState.p1name === "" && matchState.p2name === "")
     {
-      
+      setPlayer1(true);
     }
   })
   
@@ -117,6 +119,9 @@ function MatchRoom() {
       {/* TO DO MAKE MATCH ROOM COME HERE IF USER IS SIGNED IN */}
       <h1>Match Room</h1>
       
+      {
+        
+      }
     </>
   )
 }
