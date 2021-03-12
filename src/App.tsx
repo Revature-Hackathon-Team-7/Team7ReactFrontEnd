@@ -201,7 +201,6 @@ function MatchRoom(props: any) {
             if(i%2 == 0)
             {
               return(<Player1 key={e.id} player={e} />) //apparently I really need this return here
-              
             }
             else
             {
@@ -218,8 +217,83 @@ function MatchRoom(props: any) {
 }
 
 const Player1 = (props:any) => {
+
+  const swingBtn = async () => 
+  {
+     //remove player from list before logging them out
+     const playerRef = firestore.collection("Player");
+     const data = await playerRef.get();
+     
+     let idVal = "";
+     if (data != undefined)
+     {
+       data.docs.forEach(item=>{
+         if(item.data().name == auth.currentUser?.displayName)
+         {
+           idVal = item.id;
+         }
+       });
+ 
+       if(idVal !== "")
+       {
+         playerRef.doc(idVal).update({
+           move: 1,
+         });
+       }
+      }
+  }
+
+  const upperBtn = async () => {
+    //remove player from list before logging them out
+    const playerRef = firestore.collection("Player");
+    const data = await playerRef.get();
+    
+    let idVal = "";
+    if (data != undefined)
+    {
+      data.docs.forEach(item=>{
+        if(item.data().name == auth.currentUser?.displayName)
+        {
+          idVal = item.id;
+        }
+      })
+
+      if(idVal !== "")
+      {
+        playerRef.doc(idVal).update({
+          move: 2,
+        });
+      }
+    }
+  }
+
+  const lowBtn = async () => {
+    //remove player from list before logging them out
+    const playerRef = firestore.collection("Player");
+    const data = await playerRef.get();
+    
+    let idVal = "";
+    if (data != undefined)
+    {
+      data.docs.forEach(item=>{
+        if(item.data().name == auth.currentUser?.displayName)
+        {
+          idVal = item.id;
+        }
+      })
+
+      if(idVal !== "")
+      {
+        playerRef.doc(idVal).update({
+          move: 3,
+        });
+      }
+    }
+  }
+
   return (
     <div className="col-6">
+      <h2 style={{color:"white"}}>Player 1</h2>
         <div className="p1-health" style={{ color: "white" }}>
           <p>{props.player.health}</p>
         </div>
@@ -233,16 +307,90 @@ const Player1 = (props:any) => {
           <p style={{ color: "white" }}>{props.player.move}</p>
         </div>
 
-        <button onClick={() => ""}>Swing Kick</button>
-        <button onClick={() => ""}>Uppercut</button>
-        <button onClick={() => ""}>Low Kick</button>
+        <button onClick={swingBtn}>Swing Kick</button>
+        <button onClick={upperBtn}>Uppercut</button>
+        <button onClick={lowBtn}>Low Kick</button>
     </div>
   )
 }
 
 const Player2 = (props:any) => {
+
+    const swingBtn = async () => {
+     //remove player from list before logging them out
+     const playerRef = firestore.collection("Player");
+     const data = await playerRef.get();
+     
+     let idVal = "";
+     if (data != undefined)
+     {
+       data.docs.forEach(item=>{
+         if(item.data().name == auth.currentUser?.displayName)
+         {
+           idVal = item.id;
+         }
+       })
+ 
+       if(idVal !== "")
+       {
+         playerRef.doc(idVal).update({
+           move: 1,
+         });
+       }
+      }
+    }
+
+  const upperBtn = async () => {
+    //remove player from list before logging them out
+    const playerRef = firestore.collection("Player");
+    const data = await playerRef.get();
+    
+    let idVal = "";
+    if (data != undefined)
+    {
+      data.docs.forEach(item=>{
+        if(item.data().name == auth.currentUser?.displayName)
+        {
+          idVal = item.id;
+        }
+      })
+
+      if(idVal !== "")
+      {
+        playerRef.doc(idVal).update({
+          move: 2,
+        });
+      }
+    }
+  }
+
+  const lowBtn = async () => {
+    //remove player from list before logging them out
+    const playerRef = firestore.collection("Player");
+    const data = await playerRef.get();
+    
+    let idVal = "";
+    if (data != undefined)
+    {
+      data.docs.forEach(item=>{
+        if(item.data().name == auth.currentUser?.displayName)
+        {
+          idVal = item.id;
+        }
+      })
+
+      if(idVal !== "")
+      {
+        playerRef.doc(idVal).update({
+          move: 3,
+        });
+      }
+    }
+  }
+
   return (
     <div className="col-6">
+      <h2 style={{color:"white"}} >Player 2</h2>
         <div  style={{ color: "white" }}>
           <p>{props.player.health}</p>
         </div>
@@ -256,9 +404,9 @@ const Player2 = (props:any) => {
           <p style={{ color: "white" }}>{props.player.move}</p>
         </div>
 
-        <button onClick={() => ""}>Swing Kick</button>
-        <button onClick={() => ""}>Uppercut</button>
-        <button onClick={() => ""}>Low Kick</button>
+        <button onClick={swingBtn}>Swing Kick</button>
+        <button onClick={upperBtn}>Uppercut</button>
+        <button onClick={lowBtn}>Low Kick</button>
     </div>
   )
 }
