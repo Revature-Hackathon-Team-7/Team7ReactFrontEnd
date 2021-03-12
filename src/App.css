@@ -14,3 +14,19 @@
   height: 100vh;
   background-color: rgb(40, 40, 40);
 }
+
+
+.sign-in{
+  color: #282c34;
+  background: white;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.App section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: rgb(40, 40, 40);
+}
